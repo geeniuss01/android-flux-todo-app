@@ -14,4 +14,5 @@ public interface TodoActions {
 
     String KEY_TEXT = "key-text";
     String KEY_ID = "key-id";
+    String TODO_CONFIRM_DESTROY = "todo-confirm-destroy";
 }

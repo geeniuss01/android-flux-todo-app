@@ -82,14 +82,21 @@ public class TodoActivity extends AppCompatActivity {
         listAdapter.setItems(todoStore.getTodos());
 
         if (todoStore.canUndo()) {
-            Snackbar snackbar = Snackbar.make(mainLayout, "Element deleted", Snackbar.LENGTH_LONG);
-            snackbar.setAction("Undo", new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    actionsCreator.undoDestroy();
-                }
-            });
-            snackbar.show();
+          Snackbar snackbar = Snackbar.make(mainLayout, "Element deleted", Snackbar.LENGTH_LONG);
+          snackbar.setAction("Undo", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              actionsCreator.undoDestroy();
+            }
+          });
+          snackbar.addCallback(new Snackbar.Callback() {
+            @Override
+            public void onDismissed(Snackbar transientBottomBar, int event) {
+              super.onDismissed(transientBottomBar, event);
+              actionsCreator.confirmDestroy();
+            }
+          });
+          snackbar.show();
         }
     }
 
@@ -98,6 +105,7 @@ public class TodoActivity extends AppCompatActivity {
         super.onResume();
         dispatcher.register(this);
         dispatcher.register(todoStore);
+      updateUI();// for first time open or incase it changes
     }
 
     @Override

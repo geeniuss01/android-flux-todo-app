@@ -9,9 +9,9 @@ import lgvalle.com.fluxtodo.model.Todo;
 public class ActionsCreator {
 
     private static ActionsCreator instance;
-    final Dispatcher dispatcher;
+    private final Dispatcher dispatcher;
 
-    ActionsCreator(Dispatcher dispatcher) {
+    private ActionsCreator(Dispatcher dispatcher) {
         this.dispatcher = dispatcher;
     }
 
@@ -59,5 +59,9 @@ public class ActionsCreator {
 
     public void destroyCompleted() {
         dispatcher.dispatch(TodoActions.TODO_DESTROY_COMPLETED);
+    }
+
+    public void confirmDestroy() {
+        dispatcher.dispatch(TodoActions.TODO_CONFIRM_DESTROY);
     }
 }

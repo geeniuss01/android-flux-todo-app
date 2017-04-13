@@ -22,7 +22,7 @@ public class TodoStore extends Store {
     private Todo lastDeleted;
 
 
-    protected TodoStore(Dispatcher dispatcher) {
+    private TodoStore(Dispatcher dispatcher) {
         super(dispatcher);
         todos = new ArrayList<>();
     }
@@ -65,6 +65,10 @@ public class TodoStore extends Store {
                 undoDestroy();
                 emitStoreChange();
                 break;
+
+            case TodoActions.TODO_CONFIRM_DESTROY:
+                confirmDestroy();
+                break;//statechange need not be propogated
 
             case TodoActions.TODO_COMPLETE:
                 id = ((long) action.getData().get(TodoActions.KEY_ID));
@@ -158,10 +162,12 @@ public class TodoStore extends Store {
         }
     }
 
+    private void confirmDestroy() {
+        lastDeleted = null;
+    }
+
     private Todo getById(long id) {
-        Iterator<Todo> iter = todos.iterator();
-        while (iter.hasNext()) {
-            Todo todo = iter.next();
+        for (Todo todo : todos) {
             if (todo.getId() == id) {
                 return todo;
             }
